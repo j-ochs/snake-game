@@ -1,4 +1,3 @@
-package week8;
 import java.util.*;
 import java.awt.Color;
 import java.awt.Font;
@@ -71,7 +70,6 @@ public class WormGame extends Frame{
 		public void keyTyped(KeyEvent e) {}
 	}	//end of inner class MyKey ----------------------------------------
 	
-	
 	/**
 	 * This class creates our worm, which is a queue of x and y coordinate points
 	 */
@@ -83,8 +81,7 @@ public class WormGame extends Frame{
 		//	myWorm.add(new Point(x, y));
 		//}
 	}  //end of inner class Worm --------------------------------------------
-	
-	
+		
 	/**
 	 * This method paints the initial food spawn at the start of the game
 	 * @param gc is a graphics context
@@ -114,7 +111,6 @@ public class WormGame extends Frame{
 		move();
 		//repaint();
 	}
-	
 	
 	public boolean hitSelf(){
 		Queue<Point> temp = new LinkedList<Point>();
@@ -168,7 +164,6 @@ public class WormGame extends Frame{
 				}
 			}
 			
-			
 		//	Point temp = myWorm.peek();
 		//	myWorm.remove(temp);
 		//	if (myWorm.contains(temp)) {
@@ -219,7 +214,6 @@ public class WormGame extends Frame{
 			if (count <= 0){
 				wg.move();
 			}
-			
 		}
 	}
 }
