@@ -1,12 +1,15 @@
-package week8;
+
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Frame;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.image.BufferStrategy;
 
 // ------>  press 'w' to reset the game.  press 'q' to quit the game  <--------
 /**
@@ -37,6 +40,8 @@ public class WormGame extends Frame{
 	protected Point foodXY = new Point(foodX,foodY);
 	protected Point headXY = new Point(headX, headY);
 	protected Queue<Point> myWorm = new LinkedList<Point>();
+	//protected int currentScore = myWorm.size();
+	BufferStrategy bs;
 	
 	/**
 	 * This constructor creates an instance of our WormGame class
@@ -50,6 +55,8 @@ public class WormGame extends Frame{
 		setVisible(true);
 		setBackground(Color.BLACK);
 		myWorm.add(new Point(headX, headY));
+		createBufferStrategy(2);
+		bs = this.getBufferStrategy();
 	}
 
 	/**
@@ -79,9 +86,6 @@ public class WormGame extends Frame{
 		public Worm(){
 			myWorm.add(new Point(headX, headY));
 		}
-		//public void addSeg(int x, int y){
-		//	myWorm.add(new Point(x, y));
-		//}
 	}  //end of inner class Worm --------------------------------------------
 	
 	
@@ -127,6 +131,24 @@ public class WormGame extends Frame{
 		}
 		return false;
 	}
+	
+	public void speedup(){
+		Timer t = new Timer();
+		t.schedule(new TimerTask() {
+		    @Override
+		    public void run() {
+		       System.out.println("Hello World");
+		    }
+		}, 0, 5000);
+		try {
+		    Thread.sleep(1000);
+		} catch(InterruptedException ex) {
+		    Thread.currentThread().interrupt();
+		}
+		}
+
+	
+	
 
 	/**
 	 * this method exercises all of the other previous methods, causing motion on our frame
@@ -151,46 +173,48 @@ public class WormGame extends Frame{
 				count++;
 				//repaint();
 			}
+	}
+/*
 			Queue<Point> temp = new LinkedList<Point>();
 			for (Point p: myWorm) {
 				temp.add(p);
-			}
-			
+			}	
 			Iterator it = temp.iterator();
 			while (it.hasNext()){
 				Point w = (Point) it.next();
 			
 			for (int s=0; s<temp.size(); s++){
-				//if (myWorm.peek() != temp.peek()){}
-				//else 
-				//	count++;
-					//repaint();
+				if (myWorm.peek() != temp.peek()){}
+				else 
+					count++;
+					repaint();
 				}
 			}
 			
 			
-		//	Point temp = myWorm.peek();
-		//	myWorm.remove(temp);
-		//	if (myWorm.contains(temp)) {
-		//		count++; repaint();
-			}// else {
+			Point temp = myWorm.peek();
+			myWorm.remove(temp);
+			if (myWorm.contains(temp)) {
+				count++; repaint();
+			} else {
 				//head = temp;
-	//			myWorm.add(new Point (headX, headY));
-		//	}
-			
-	//}
+				myWorm.add(new Point (headX, headY));
+			}
+*/	
 	
 	/**
 	 * This method paints our graphics onto the frame
 	 * @param gc is a graphics context
 	 */
+	@Override
 	public void paint(Graphics gc){
+		Graphics2D g2 = null;
 		paintHead(gc);
 		drawFood(gc);
 		Font f = new Font("SERIF", Font.PLAIN, 30);
 		gc.setFont(f);
 		gc.setColor(Color.PINK);
-		gc.drawString("Press an arrow key to get started, Q to exit, or W to reset", width/9, height/2);
+		//gc.drawString("Press an arrow key to get started, Q to exit, or W to reset", width/9, height/2);
 		gc.drawString("Current Score : " + currentScore, 30, height-150);
 		gc.drawString("High Score : " + highScore, 30, height-100);
 		gc.drawString("Attempts : " + numAttempts, 30, height-50);
@@ -204,8 +228,34 @@ public class WormGame extends Frame{
 		if(numAttempts >= 1){
 			runningScore = (runningScore + currentScore)/numAttempts;
 		}
+		if (count > 0){
+			gc.drawString("G A M E    O V E R", width/9, height/2);
+			gc.drawString("Press W to try again or Q to exit", width/9, (height/2)+50);
+		}
+		else {};
+		//bs.show();
 	}
 
+	
+	/*
+	Graphics2D g2=null;
+    try{
+       g2 = (Graphics2D) bs.getDrawGraphics();
+       drawWhatEver(g2);
+    }finally{
+       g2.dispose();
+    }
+    bs.show();//I never put anything on bs, so, why do I need to show its content??
+ }
+
+ private void drawWhatEver(Graphics2D g2){
+     g2.fillRect(20, 50, 20, 20);//now.. this I can show..
+ }
+ 
+ public void drawGame(Graphics2D g2){
+	 
+ }
+	*/
 	/**
 	 * This main method exercises all of the methods previously written in our class
 	 * @param args is a command line string argument
@@ -219,7 +269,7 @@ public class WormGame extends Frame{
 			if (count <= 0){
 				wg.move();
 			}
-			
+			//wg.speedup();
 		}
 	}
 }
